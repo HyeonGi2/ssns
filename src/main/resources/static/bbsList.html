@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>게시판 목록</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/tui-grid/dist/tui-grid.js"></script>
     <script>
         // AJAX 데이터 매핑 예제(1)
         function fnSearch() {
@@ -41,7 +42,7 @@
             let bbsVO = { };
 
             $.ajax({
-                url: "/bbs/selectBbsList_fragment",
+                url: "/bbs/selectBbsList",
                 data: bbsVO,
                 type: "POST"
             }).done(function(result) {
@@ -49,9 +50,36 @@
             });
         }
 
+
         // AJAX 데이터 매핑 예제(3)
         // 외부 Grid Component 를 사용하여 데이터를 표현
         // (ex) jqGrid, Toast UI Grid
+        function grid() {
+            $.ajax({
+                url : "/bbs/selectBbsList_fragment",
+                method :"post",
+                dataType : "JSON",
+                success : function(result){
+                    grid.resetData(result);
+                }
+            });
+
+            let grid = new tui.Grid({
+                el: document.getElementById('grid'),
+                scrollX: false,
+                scrollY: false,
+                columns: [
+                    {
+                        header: 'bbsId',
+                        name: 'bbsId',
+                    },
+                    {
+                        header: 'bbsTitle',
+                        name: 'bbsTitle',
+                    }
+                ]
+            });
+        }
     </script>
     <style>
         table { width:100% }
@@ -59,32 +87,8 @@
     </style>
 </head>
 <body>
-    <button type="button" onclick="fnSearch()">조회</button>
+    <button type="button" onclick="grid()">조회</button>
     <button type="button" onclick="fnSearch_fragment()">조회(thymeleaf fragment)</button>
-    <button type="button oncl"></button>
-    <table>
-        <thead>
-            <tr>
-                <td>BBS_ID</td>
-                <td>BBS_TITLE</td>
-                <td>BBS_CONTENT</td>
-                <td>REG_DT</td>
-                <td>REG_ID</td>
-                <td>UPD_DT</td>
-                <td>UPD_ID</td>
-            </tr>
-        </thead>
-        <tbody id="bbsTable">
-            <tr th:each="bbs: ${bbsList}">
-                <td th:text="${bbs.bbsId}"></td>
-                <td th:text="${bbs.bbsTitle}"></td>
-                <td th:text="${bbs.bbsContent}"></td>
-                <td th:text="${bbs.regDt}"></td>
-                <td th:text="${bbs.regId}"></td>
-                <td th:text="${bbs.updDt}"></td>
-                <td th:text="${bbs.updId}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="grid"></div>
 </body>
 </html>
