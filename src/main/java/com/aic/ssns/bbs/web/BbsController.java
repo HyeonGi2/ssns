@@ -3,6 +3,8 @@ package com.aic.ssns.bbs.web;
 import com.aic.ssns.bbs.model.BbsVO;
 import com.aic.ssns.bbs.service.BbsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +34,9 @@ public class BbsController {
 
     // 타임리프 fragment 를 이용한 view 매핑
     @PostMapping("/bbs/selectBbsList_fragment")
-    public String selectBbsList_fragment(Model model, BbsVO bbsVO) {
-        model.addAttribute("bbsList", bbsService.selectBbsList(bbsVO));
-        return "/bbs/bbsList :: #bbsTable";
+    public ResponseEntity<?> selectBbsList_fragment(Model model, BbsVO bbsVO) {
+        List<BbsVO> bbsList = bbsService.selectBbsList(bbsVO);
+        return new ResponseEntity<>(bbsList, HttpStatus.OK);
     }
 
 }
