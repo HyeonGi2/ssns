@@ -1,95 +1,126 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>게시판 목록</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/tui-grid/dist/tui-grid.js"></script>
-    <script>
-        // AJAX 데이터 매핑 예제(1)
-        function fnSearch() {
-            let bbsVO = { };
+<!--&lt;!&ndash;-->
+<!-- * 파일명           : bbsList.html-->
+<!-- * 기능             : 게시판 작성글 목록 리스트 화면 구성.-->
+<!-- * 작성자           : 홍현기 사원-->
+<!-- * 최종 작성일      : 2023.03.24-->
 
-            $.ajax({
-                url: "/bbs/selectBbsList",
-                data: bbsVO,
-                type: "POST"
-            }).done(function(result) {
-                let tags = [];
+<!-- * 개정이력-->
+<!-- * 작성일자           작성자           개정내용-->
+<!-- * 2023.03.23         홍현기 사원      내용-->
+<!--&ndash;&gt;-->
 
-                // 기존 데이터 삭제
-                $("#bbsTable").empty();
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>게시판 목록</title>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="/tui-grid/dist/tui-grid.js"></script>-->
+<!--    <script>-->
+<!--        // AJAX 데이터 매핑 예제(1)-->
+<!--        function fnSearch() {-->
+<!--            let bbsVO = { };-->
 
-                // 새로운 데이터 매핑
-                $.each(result, function(index, item) {
-                    tags.push("<tr>");
-                    tags.push("<td>" + item.bbsId + "</td>");
-                    tags.push("<td>" + item.bbsTitle + "</td>");
-                    tags.push("<td>" + item.bbsContent + "</td>");
-                    tags.push("<td>" + item.regDt + "</td>");
-                    tags.push("<td>" + item.regId + "</td>");
-                    tags.push("<td>" + item.updDt + "</td>");
-                    tags.push("<td>" + item.updId + "</td>");
-                    tags.push("</tr>");
+<!--            $.ajax({-->
+<!--                url: "/bbs/bbsList",-->
+<!--                data: bbsVO,-->
+<!--                type: "POST"-->
+<!--            }).done(function(result) {-->
+<!--                let tags = [];-->
 
-                    $("#bbsTable").append(tags);
-                });
-            });
-        }
+<!--                // 기존 데이터 삭제-->
+<!--                $("#bbsTable").empty();-->
 
-        // AJAX 데이터 매핑 예제(2)
-        function fnSearch_fragment() {
-            let bbsVO = { };
+<!--                // 새로운 데이터 매핑-->
+<!--                $.each(result, function(index, item) {-->
+<!--                    tags.push("<tr>");-->
+<!--                    tags.push("<td>" + item.bbsId + "</td>");-->
+<!--                    tags.push("<td>" + item.bbsTitle + "</td>");-->
+<!--                    tags.push("<td>" + item.bbsContent + "</td>");-->
+<!--                    tags.push("<td>" + item.regDt + "</td>");-->
+<!--                    tags.push("<td>" + item.regId + "</td>");-->
+<!--                    tags.push("<td>" + item.updDt + "</td>");-->
+<!--                    tags.push("<td>" + item.updId + "</td>");-->
+<!--                    tags.push("</tr>");-->
 
-            $.ajax({
-                url: "/bbs/selectBbsList",
-                data: bbsVO,
-                type: "POST"
-            }).done(function(result) {
-                $("#bbsTable").replaceWith(result);
-            });
-        }
+<!--                    $("#bbsTable").append(tags);-->
+<!--                });-->
+<!--            });-->
+<!--        }-->
 
+<!--        // AJAX 데이터 매핑 예제(2)-->
+<!--        function fnSearch_fragment() {-->
+<!--            let bbsVO = { };-->
 
-        // AJAX 데이터 매핑 예제(3)
-        // 외부 Grid Component 를 사용하여 데이터를 표현
-        // (ex) jqGrid, Toast UI Grid
-        function grid() {
-            $.ajax({
-                url : "/bbs/selectBbsList_fragment",
-                method :"post",
-                dataType : "JSON",
-                success : function(result){
-                    grid.resetData(result);
-                }
-            });
+<!--            $.ajax({-->
+<!--                url: "/bbs/selectBbsList",-->
+<!--                data: bbsVO,-->
+<!--                type: "POST"-->
+<!--            }).done(function(result) {-->
+<!--                $("#bbsTable").replaceWith(result);-->
+<!--            });-->
+<!--        }-->
 
 
-            let grid = new tui.Grid({
-                el: document.getElementById('grid'),
-                scrollX: false,
-                scrollY: false,
-                columns: [
-                    {
-                        header: 'bbsId',
-                        name: 'bbsId',
-                    },
-                    {
-                        header: 'bbsTitle',
-                        name: 'bbsTitle',
-                    }
-                ]
-            });
-        }
-    </script>
-    <style>
-        table { width:100% }
-        table td { padding:5px; border:1px solid black; }
-    </style>
-</head>
-<body>
-    <button type="button" onclick="grid()">조회</button>
-    <button type="button" onclick="fnSearch_fragment()">조회(thymeleaf fragment)</button>
-    <div id="grid"></div>
-</body>
-</html>
+<!--        // AJAX 데이터 매핑 예제(3)-->
+<!--        // 외부 Grid Component 를 사용하여 데이터를 표현-->
+<!--        // (ex) jqGrid, Toast UI Grid-->
+<!--        function grid() {-->
+<!--            $.ajax({-->
+<!--                url : "/bbs/selectBbsList_fragment",-->
+<!--                method :"post",-->
+<!--                dataType : "JSON",-->
+<!--                success : function(result){-->
+<!--                    grid.resetData(result);-->
+<!--                }-->
+<!--            });-->
+
+
+<!--            let grid = new tui.Grid({-->
+<!--                el: document.getElementById('grid'),-->
+<!--                scrollX: false,-->
+<!--                scrollY: false,-->
+<!--                columns: [-->
+<!--                    {-->
+<!--                        header: 'ID',-->
+<!--                        name: 'bbsId',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '제목',-->
+<!--                        name: 'bbsTitle',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '내용',-->
+<!--                        name: 'bbsContent',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '생성일시',-->
+<!--                        name: 'regDt',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '생성ID',-->
+<!--                        name: 'regId',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '업데이트일시',-->
+<!--                        name: 'updDt',-->
+<!--                    },-->
+<!--                    {-->
+<!--                        header: '업데이트ID',-->
+<!--                        name: 'updId',-->
+<!--                    }-->
+<!--                ]-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+<!--    <style>-->
+<!--        table { width:100% }-->
+<!--        table td { padding:5px; border:1px solid black; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <button type="button" onclick="grid()">조회</button>-->
+<!--    <button type="button" onclick="fnSearch_fragment()">조회(thymeleaf fragment)</button>-->
+<!--    <div id="grid"></div>-->
+<!--</body>-->
+<!--</html>-->

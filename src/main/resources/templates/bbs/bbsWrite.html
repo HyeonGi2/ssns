@@ -1,0 +1,63 @@
+<!--
+ * 파일명           : bbsWrite.html
+ * 기능             : 게시판 글 작성 화면 구성.
+ * 작성자           : 홍현기 사원
+ * 최종 작성일      : 2023.03.24
+
+ * 개정이력
+ * 작성일자           작성자           개정내용
+ * 2023.03.23         홍현기 사원      내용
+-->
+
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>등록</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/tui-grid/dist/tui-grid.js"></script>
+    <script>
+        // AJAX 데이터 매핑 예제(1)
+        function bbsWrite() {
+            let bbsVO = { };l
+
+            $.ajax({
+                url: "/bbs/bbsWrite",
+                data: bbsVO,
+                type: "POST"
+            }).done(function(result) {
+                let tags = [];
+
+                // 기존 데이터 삭제
+                $("#bbsTable").empty();
+
+                // 새로운 데이터 매핑
+                $.each(result, function(index, item) {
+                    tags.push("<tr>");
+                    tags.push("<td>" + item.id + "</td>");
+                    tags.push("<td>" + item.title + "</td>");
+                    tags.push("<td>" + item.content + "</td>");
+                    tags.push("<td>" + item.writer + "</td>");
+                    tags.push("<td>" + item.viewCnt + "</td>");
+                    tags.push("<td>" + item.noticeYn + "</td>");
+                    tags.push("<td>" + item.deleteYn + "</td>");
+                    tags.push("<td>" + item.createdDate + "</td>");
+                    tags.push("<td>" + item.modifiedDate + "</td>");
+                    tags.push("</tr>");
+
+                    $("#bbsTable").append(tags);
+                });
+            });
+        }
+    </script>
+    <style>
+        table { width:100% }
+        table td { padding:5px; border:1px solid black; }
+    </style>
+</head>
+<body>
+<button type="button" onclick="bbsWrite()">등록</button>
+<div id="grid"></div>
+
+</body>
+</html>

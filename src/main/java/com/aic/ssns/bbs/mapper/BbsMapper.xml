@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * 파일명           : BbsMapper.xml
+ * 기능             : BbsMapper 인터페이스의 호출을 받아 게시판 기능 구현을 담당하는 데이터베이스 쿼리를 보관.
+ * 작성자           : 홍현기 사원
+ * 최종 작성일      : 2023.03.24
+
+ * 개정이력
+ * 작성일자           작성자           개정내용
+ * 2023.03.23         홍현기 사원      내용
+ -->
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- BbsMapper.java에서 selectBbsList를 호출받아 출력할 작성글 데이터베이스 정보 보관
+     mapper namespace로 정보를 보낼 Mapper 인터페이스 파일 위치 입력,
+     그 후 데이터베이스 쿼리문을 저장. -->
 <mapper namespace="com.aic.ssns.bbs.mapper.BbsMapper">
-
     <select id="selectBbsList" resultType="com.aic.ssns.bbs.model.BbsVO">
         SELECT
             BBS_ID,
@@ -15,5 +28,104 @@
             UPD_ID
         FROM T_BBS
     </select>
+    <select id="bbsList" resultType="com.aic.ssns.bbs.model.BbsVO">
+        SELECT
+            BBS_ID,
+            BBS_TITLE,
+            BBS_CONTENT,
+            REG_DT,
+            REG_ID,
+            UPD_DT,
+            UPD_ID
+        FROM T_BBS
+    </select>
+    <delete id="deleteBbs" parameterType="com.aic.ssns.bbs.model.BbsVO">
+        DELETE FROM T_BBS WHERE BBS_ID = #{bbsId}
+    </delete>
+
+    <!-- tb_post 테이블 전체 컬럼 -->
+    <sql id="postColumns">
+        id
+        , title
+        , content
+        , writer
+        , view_cnt
+        , notice_yn
+        , delete_yn
+        , created_date
+        , modified_date
+    </sql>
+
+
+    <!-- 게시글 저장 -->
+    <insert id="save" parameterType="com.aic.ssns.bbs.model.BbsVO">
+        INSERT INTO tb_post (
+        <include refid="postColumns" />
+        ) VALUES (
+        #{id}
+        , #{title}
+        , #{content}
+        , #{writer}
+        , 0
+        , #{noticeYn}
+        , 0
+        , NOW()
+        , NULL
+        )
+    </insert>
+
+
+    <!-- 게시글 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="com.aic.ssns.bbs.model.BbsVO">
+        SELECT
+        <include refid="postColumns" />
+        FROM
+        tb_post
+        WHERE
+        id = #{value}
+    </select>
+
+
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="com.aic.ssns.bbs.model.BbsVO">
+        UPDATE tb_post
+        SET
+            modified_date = NOW()
+          , title = #{title}
+          , content = #{content}
+          , writer = #{writer}
+          , notice_yn = #{noticeYn}
+        WHERE
+            id = #{id}
+    </update>
+
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        UPDATE tb_post
+        SET
+            delete_yn = 1
+        WHERE
+            id = #{id}
+    </delete>
+
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findAll" resultType="com.aic.ssns.bbs.model.BbsVO">
+        SELECT
+        <include refid="postColumns" />
+        FROM
+        tb_post
+        WHERE
+        delete_yn = 0
+        ORDER BY
+        id DESC
+    </select>
 
 </mapper>
+    <!-- 작성글 상세페이지 기능 추가 예정
+        <select id="selectBbsDetail" resultType="com.aic.ssns.bbs.model.BbsVO">
+            SELECT * FROM T_BBS WHERE BBS_ID = #{BBS_ID}
+        </select>  -->
+
+

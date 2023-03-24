@@ -1,0 +1,65 @@
+<!--
+ * 파일명           : bbsDetail.html
+ * 기능             : 게시판 작성글 상세페이지 화면 구성.
+ * 작성자           : 홍현기 사원
+ * 최종 작성일      : 2023.03.24
+
+ * 개정이력
+ * 작성일자           작성자           개정내용
+ * 2023.03.23         홍현기 사원      내용
+-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>상세페이지</title>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script>-->
+<!--        function fnDetail() {-->
+<!--            let bbsVO = { bbsId : $("#bbsId").val() };-->
+
+<!--            $.ajax({-->
+<!--                url: "/bbs/selectBbsDetail",-->
+<!--                data: bbsVO,-->
+                    data: JSON.stringify(bbsVO),
+<!--                type: "POST"-->
+<!--            }).done(function (result){-->
+<!--                let tags = [];-->
+
+<!--                // 기존 데이터 삭제-->
+<!--                $("#bbsTable").empty();-->
+
+<!--                // 새로운 데이터 매핑-->
+<!--                $.each(result, function (index, item){-->
+<!--                    tags.push("<tr>");-->
+<!--                    tags.push("<td>" + item.bbsId + "</td>");-->
+<!--                    tags.push("<td>" + item.bbsTitle + "</td>");-->
+<!--                    tags.push("<td>" + item.bbsContent + "</td>");-->
+<!--                    tags.push("<td>" + item.regDt + "</td>");-->
+<!--                    tags.push("<td>" + item.regId + "</td>");-->
+<!--                    tags.push("<td>" + item.updDt + "</td>");-->
+<!--                    tags.push("<td>" + item.updId + "</td>");-->
+<!--                    tags.push("</tr>");-->
+<!--                });-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+<!--    <style>-->
+<!--        table { width:100% }-->
+<!--        table td { padding: 5px; border: 1px solid black;}-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <td>BBS_ID</td>-->
+<!--    <td>BBS_TITLE</td>-->
+<!--    <td>BBS_CONTENT</td>-->
+<!--    <td>REG_DT</td>-->
+<!--    <td>REG_ID</td>-->
+<!--    <td>UPD_DT</td>-->
+<!--    <td>UPD_ID</td>-->
+<!--<body>-->
+
+
+
+
